@@ -14,9 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
+from chatbot_app.views import index, get_response
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('', index, name='index'),
+    path('get_response', get_response, name='get_response'),
 ]
+# Add this code at the end of the urlpatterns list
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
