@@ -1,51 +1,44 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
     <title>Chatbot Landing Page</title>
-   
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#user-input').keypress(function (event) {
+                if (event.which === 13) {  // Enter key
+                    event.preventDefault();
+
+                    var userInput = $('#user-input').val();
+
+                    $.ajax({
+                        url: '/get-response/',
+                        type: 'POST',
+                        data: {
+                            user_input: userInput,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            var response = data.response;
+                            $('#chat-log').append('<p class="response">' + response + '</p>');
+                            $('#user-input').val('');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to ChatBot</h1>
-        <head>
-            <title>Chatbot Landing Page</title>
-            <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-        </head>
         
         <div id="chat-container">
             <div id="chat-log"></div>
             <input type="text" id="user-input" placeholder="Type your message..." autofocus>
         </div>
     </div>
-
-  
-
-<script>
-    $(document).ready(function () {
-        $('#chat-form').submit(function (event) {
-            event.preventDefault();
-            
-            var userInput = $('#user-input').val();
-            
-            $.ajax({
-                url: '/get-response/',
-                type: 'POST',
-                data: {
-                    user_input: userInput,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    var response = data.response;
-                    $('#chat-history').append('<p class="response">' + response + '</p>');
-                    $('#user-input').val('');
-                }
-            });
-        });
-    });
-</script>
-
 </body>
 </html>

@@ -22,8 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', index, name='index'),
-    path('get_response', get_response, name='get_response'),
+    path('get_response/', get_response, name='get_response'),
 ]
-# Add this code at the end of the urlpatterns list
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
